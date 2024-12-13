@@ -22,7 +22,6 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	data := [2][]int{{}, {}}
-	totalDistance := 0
 	for scanner.Scan() {
 		line := scanner.Text()
 		split := strings.Split(line, "   ")
@@ -42,6 +41,12 @@ func main() {
 		slices.Sort(v)
 	}
 
+	part1(data)
+	part2(data)
+}
+
+func part1(data [2][]int) {
+	totalDistance := 0
 	for idx := 0; idx < len(data[0]); idx++ {
 		distance := data[1][idx] - data[0][idx]
 		if distance < 0 {
@@ -50,4 +55,18 @@ func main() {
 		totalDistance += distance
 	}
 	fmt.Println(totalDistance)
+}
+
+func part2(data [2][]int) {
+	similarity := 0
+	rightCounts := map[int]int{}
+	for _, val := range data[1] {
+		count, _ := rightCounts[val]
+		rightCounts[val] = count + 1
+	}
+	for _, val := range data[0] {
+		count, _ := rightCounts[val]
+		similarity += count * val
+	}
+	fmt.Println(similarity)
 }
